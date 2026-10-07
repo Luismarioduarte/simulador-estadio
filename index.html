@@ -1,0 +1,6080 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Estadio Sierra Nevada | Ticketing Simulator</title>
+
+<style>
+/* =========================================================
+   VARIABLES
+========================================================= */
+
+:root{
+    --blue:#0b1f3a;
+    --blue2:#123d70;
+    --blue3:#1e5aa8;
+    --cyan:#2aa7df;
+
+    --black:#111318;
+    --mrblack:#2b2520;
+    --allblack:#050505;
+    --sayayin:#e3ad19;
+    --preferencial:#2675d8;
+    --general:#229447;
+    --popular:#c83d42;
+
+    --white:#ffffff;
+    --gray:#64748b;
+    --light:#f4f7fb;
+    --border:#e2e8f0;
+
+    --success:#16a34a;
+    --warning:#f59e0b;
+    --danger:#dc2626;
+
+    --shadow:0 15px 45px rgba(8,31,58,.12);
+    --radius:18px;
+}
+
+/* =========================================================
+   RESET
+========================================================= */
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    font-family:Inter,Segoe UI,Arial,sans-serif;
+    background:#f3f6fa;
+    color:#172033;
+}
+
+button,
+input,
+select{
+    font:inherit;
+}
+
+button{
+    cursor:pointer;
+}
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.header{
+    position:sticky;
+    top:0;
+    z-index:1000;
+
+    height:76px;
+
+    background:
+        linear-gradient(110deg,#08182e,#123d70 65%,#0b1f3a);
+
+    color:white;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    padding:0 28px;
+
+    box-shadow:0 6px 30px rgba(0,0,0,.18);
+}
+
+.brand{
+    display:flex;
+    align-items:center;
+    gap:13px;
+}
+
+.brand-logo{
+    width:46px;
+    height:46px;
+    border-radius:14px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    background:linear-gradient(135deg,#eabf3b,#fff2a1);
+
+    color:#07172c;
+    font-weight:900;
+    font-size:22px;
+
+    box-shadow:0 5px 18px rgba(0,0,0,.25);
+}
+
+.brand-text h1{
+    font-size:18px;
+    letter-spacing:.8px;
+}
+
+.brand-text span{
+    display:block;
+    font-size:11px;
+    opacity:.7;
+    margin-top:2px;
+}
+
+.nav{
+    display:flex;
+    gap:4px;
+}
+
+.nav button{
+    background:transparent;
+    border:0;
+    color:#dbeafe;
+    padding:11px 13px;
+    border-radius:10px;
+    transition:.2s;
+    font-size:13px;
+}
+
+.nav button:hover,
+.nav button.active{
+    background:rgba(255,255,255,.12);
+    color:white;
+}
+
+.header-actions{
+    display:flex;
+    gap:9px;
+    align-items:center;
+}
+
+.icon-btn{
+    border:1px solid rgba(255,255,255,.16);
+    background:rgba(255,255,255,.08);
+    color:white;
+
+    min-width:42px;
+    height:42px;
+
+    border-radius:12px;
+
+    position:relative;
+}
+
+.cart-badge{
+    position:absolute;
+    right:-5px;
+    top:-5px;
+
+    min-width:19px;
+    height:19px;
+
+    border-radius:50%;
+
+    background:#eab308;
+    color:#111;
+
+    font-size:10px;
+    font-weight:900;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+/* =========================================================
+   MAIN
+========================================================= */
+
+main{
+    min-height:calc(100vh - 76px);
+}
+
+.page{
+    display:none;
+}
+
+.page.active{
+    display:block;
+}
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.hero{
+    min-height:510px;
+
+    position:relative;
+    overflow:hidden;
+
+    display:flex;
+    align-items:center;
+
+    padding:70px 7%;
+
+    background:
+        radial-gradient(circle at 75% 25%,rgba(55,145,220,.28),transparent 30%),
+        linear-gradient(120deg,#07182f,#123c6d 58%,#0b2444);
+
+    color:white;
+}
+
+.hero::before{
+    content:"";
+    position:absolute;
+    width:600px;
+    height:600px;
+
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:50%;
+
+    right:-180px;
+    top:-160px;
+}
+
+.hero::after{
+    content:"";
+    position:absolute;
+    width:390px;
+    height:390px;
+
+    border:1px solid rgba(255,255,255,.06);
+    border-radius:50%;
+
+    right:-30px;
+    bottom:-260px;
+}
+
+.hero-content{
+    position:relative;
+    z-index:2;
+
+    max-width:680px;
+}
+
+.eyebrow{
+    color:#f5c842;
+    text-transform:uppercase;
+    font-weight:800;
+    font-size:12px;
+    letter-spacing:2px;
+    margin-bottom:15px;
+}
+
+.hero h2{
+    font-size:clamp(42px,6vw,76px);
+    line-height:.95;
+    margin-bottom:20px;
+}
+
+.hero p{
+    color:#cbdaf0;
+    font-size:17px;
+    line-height:1.7;
+    max-width:600px;
+}
+
+.hero-buttons{
+    margin-top:30px;
+    display:flex;
+    gap:12px;
+    flex-wrap:wrap;
+}
+
+/* =========================================================
+   BUTTONS
+========================================================= */
+
+.btn{
+    border:0;
+    padding:13px 20px;
+    border-radius:12px;
+    font-weight:800;
+    transition:.2s;
+}
+
+.btn:hover{
+    transform:translateY(-2px);
+}
+
+.btn-primary{
+    color:#06172d;
+    background:linear-gradient(135deg,#f6cf51,#e9aa16);
+    box-shadow:0 10px 25px rgba(234,179,8,.25);
+}
+
+.btn-dark{
+    color:white;
+    background:#0b1f3a;
+}
+
+.btn-light{
+    background:white;
+    color:#123d70;
+}
+
+.btn-outline{
+    background:transparent;
+    border:1px solid var(--border);
+    color:#1e293b;
+}
+
+.btn-danger{
+    background:#fee2e2;
+    color:#991b1b;
+}
+
+.btn-success{
+    background:#dcfce7;
+    color:#166534;
+}
+
+/* =========================================================
+   SECTION
+========================================================= */
+
+.section{
+    padding:50px 5%;
+}
+
+.section-title{
+    display:flex;
+    justify-content:space-between;
+    align-items:end;
+    gap:20px;
+    margin-bottom:28px;
+}
+
+.section-title h2{
+    font-size:30px;
+    color:#10233f;
+}
+
+.section-title p{
+    color:#64748b;
+    margin-top:5px;
+}
+
+/* =========================================================
+   MATCH CARDS
+========================================================= */
+
+.matches-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+    gap:20px;
+}
+
+.match-card{
+    background:white;
+    border:1px solid var(--border);
+    border-radius:20px;
+    overflow:hidden;
+    box-shadow:0 8px 30px rgba(15,23,42,.06);
+    transition:.25s;
+}
+
+.match-card:hover{
+    transform:translateY(-5px);
+    box-shadow:var(--shadow);
+}
+
+.match-top{
+    padding:15px 18px;
+    background:linear-gradient(120deg,#0b1f3a,#184d88);
+    color:white;
+    display:flex;
+    justify-content:space-between;
+    font-size:11px;
+    font-weight:800;
+    text-transform:uppercase;
+}
+
+.match-body{
+    padding:25px;
+}
+
+.teams{
+    display:grid;
+    grid-template-columns:1fr auto 1fr;
+    align-items:center;
+    text-align:center;
+    gap:15px;
+}
+
+.team-logo{
+    width:68px;
+    height:68px;
+    margin:auto;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border-radius:20px;
+
+    background:#eff6ff;
+    border:1px solid #dbeafe;
+
+    font-size:28px;
+}
+
+.team-name{
+    font-weight:900;
+    margin-top:8px;
+    font-size:14px;
+}
+
+.vs{
+    font-size:13px;
+    font-weight:900;
+    color:#94a3b8;
+}
+
+.match-info{
+    margin-top:22px;
+    padding-top:18px;
+    border-top:1px solid var(--border);
+
+    display:grid;
+    gap:8px;
+
+    color:#64748b;
+    font-size:13px;
+}
+
+.match-footer{
+    padding:15px 25px 24px;
+}
+
+/* =========================================================
+   STADIUM PAGE
+========================================================= */
+
+.stadium-layout{
+    display:grid;
+    grid-template-columns:270px minmax(0,1fr) 320px;
+    min-height:calc(100vh - 76px);
+}
+
+.sidebar{
+    background:white;
+    border-right:1px solid var(--border);
+    padding:20px;
+    overflow:auto;
+}
+
+.sidebar.right{
+    border-right:0;
+    border-left:1px solid var(--border);
+}
+
+.panel-title{
+    font-size:14px;
+    font-weight:900;
+    color:#13243d;
+    margin-bottom:15px;
+}
+
+.form-group{
+    margin-bottom:16px;
+}
+
+.form-group label{
+    display:block;
+    font-size:11px;
+    font-weight:800;
+    text-transform:uppercase;
+    letter-spacing:.7px;
+    color:#64748b;
+    margin-bottom:7px;
+}
+
+input,
+select{
+    width:100%;
+    border:1px solid var(--border);
+    background:#f8fafc;
+    padding:11px 12px;
+    border-radius:10px;
+    outline:none;
+}
+
+input:focus,
+select:focus{
+    border-color:#397ac3;
+    box-shadow:0 0 0 3px rgba(37,99,235,.08);
+}
+
+/* =========================================================
+   CATEGORY FILTERS
+========================================================= */
+
+.category-filter{
+    display:grid;
+    gap:8px;
+}
+
+.filter-item{
+    display:flex;
+    align-items:center;
+    gap:9px;
+
+    padding:9px;
+
+    border-radius:9px;
+    cursor:pointer;
+
+    font-size:12px;
+    font-weight:700;
+}
+
+.filter-item:hover{
+    background:#f8fafc;
+}
+
+.color-dot{
+    width:15px;
+    height:15px;
+    border-radius:5px;
+    flex:none;
+}
+
+.status-list{
+    display:grid;
+    gap:8px;
+    margin-top:15px;
+}
+
+.status-item{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-size:12px;
+}
+
+.status-dot{
+    width:12px;
+    height:12px;
+    border-radius:50%;
+}
+
+/* =========================================================
+   STADIUM CANVAS
+========================================================= */
+
+.stadium-area{
+    position:relative;
+    overflow:hidden;
+
+    background:
+        radial-gradient(circle at center,#f7fbff 0%,#edf3f8 55%,#e3eaf1 100%);
+}
+
+.stadium-toolbar{
+    position:absolute;
+    z-index:20;
+    top:15px;
+    left:15px;
+    right:15px;
+
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+    pointer-events:none;
+}
+
+.toolbar-group{
+    display:flex;
+    gap:5px;
+    pointer-events:auto;
+
+    background:rgba(255,255,255,.9);
+    padding:5px;
+    border-radius:12px;
+
+    box-shadow:0 5px 20px rgba(15,23,42,.1);
+    backdrop-filter:blur(10px);
+}
+
+.toolbar-btn{
+    border:0;
+    background:transparent;
+    width:36px;
+    height:34px;
+    border-radius:8px;
+    font-weight:900;
+    color:#1e3a5f;
+}
+
+.toolbar-btn:hover{
+    background:#eaf2fb;
+}
+
+.stadium-viewport{
+    width:100%;
+    height:100%;
+
+    min-height:700px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    cursor:grab;
+
+    overflow:hidden;
+}
+
+.stadium-viewport.dragging{
+    cursor:grabbing;
+}
+
+#stadiumSvg{
+    width:900px;
+    height:680px;
+
+    flex:none;
+
+    transform-origin:center center;
+
+    transition:transform .12s ease-out;
+
+    filter:drop-shadow(0 30px 30px rgba(15,23,42,.15));
+}
+
+/* =========================================================
+   SVG STADIUM
+========================================================= */
+
+.stadium-shell{
+    fill:#dce5ed;
+    stroke:#b9c7d4;
+    stroke-width:3;
+}
+
+.stand{
+    stroke:#fff;
+    stroke-width:2;
+}
+
+.pitch{
+    fill:#2f9a4a;
+    stroke:#fff;
+    stroke-width:3;
+}
+
+.pitch-line{
+    fill:none;
+    stroke:rgba(255,255,255,.9);
+    stroke-width:3;
+}
+
+.seat{
+    stroke:rgba(255,255,255,.75);
+    stroke-width:.7;
+    cursor:pointer;
+    transition:filter .15s,stroke .15s,transform .15s;
+}
+
+.seat:hover{
+    filter:brightness(1.35);
+    stroke:#fff;
+    stroke-width:2;
+}
+
+.seat.selected{
+    stroke:#fff;
+    stroke-width:3;
+    filter:brightness(1.5) drop-shadow(0 0 5px white);
+}
+
+.seat.sold{
+    opacity:.38;
+    cursor:not-allowed;
+}
+
+.seat.reserved{
+    fill:#64748b !important;
+    opacity:.7;
+    cursor:not-allowed;
+}
+
+.seat.blocked{
+    fill:#7f1d1d !important;
+    opacity:.75;
+    cursor:not-allowed;
+}
+
+.stand-label{
+    font-size:15px;
+    font-weight:900;
+    fill:#28415e;
+    letter-spacing:1px;
+}
+
+.seat-text{
+    font-size:7px;
+    fill:white;
+    font-weight:900;
+    pointer-events:none;
+}
+
+/* =========================================================
+   LEGEND
+========================================================= */
+
+.legend{
+    display:grid;
+    gap:8px;
+}
+
+.legend-row{
+    display:flex;
+    align-items:center;
+    gap:9px;
+    font-size:11px;
+}
+
+.legend-color{
+    width:17px;
+    height:17px;
+    border-radius:5px;
+}
+
+/* =========================================================
+   CART
+========================================================= */
+
+.cart-empty{
+    text-align:center;
+    color:#94a3b8;
+    padding:45px 10px;
+}
+
+.cart-empty-icon{
+    font-size:40px;
+    margin-bottom:10px;
+}
+
+.selected-list{
+    display:grid;
+    gap:8px;
+    max-height:250px;
+    overflow:auto;
+}
+
+.selected-seat{
+    padding:10px;
+    border:1px solid var(--border);
+    border-radius:10px;
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+}
+
+.selected-seat strong{
+    display:block;
+    font-size:12px;
+}
+
+.selected-seat small{
+    color:#64748b;
+    font-size:10px;
+}
+
+.remove-seat{
+    border:0;
+    background:#fee2e2;
+    color:#991b1b;
+    border-radius:7px;
+    width:28px;
+    height:28px;
+}
+
+.cart-summary{
+    margin-top:18px;
+    padding-top:18px;
+    border-top:1px solid var(--border);
+}
+
+.summary-row{
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:9px;
+    font-size:13px;
+}
+
+.summary-total{
+    font-size:20px;
+    font-weight:900;
+    color:#10233f;
+}
+
+.full-btn{
+    width:100%;
+    margin-top:15px;
+}
+
+/* =========================================================
+   TOOLTIP
+========================================================= */
+
+.tooltip{
+    position:fixed;
+    z-index:5000;
+
+    pointer-events:none;
+
+    background:#07182e;
+    color:white;
+
+    padding:12px 14px;
+
+    border-radius:10px;
+
+    box-shadow:0 12px 30px rgba(0,0,0,.3);
+
+    font-size:11px;
+
+    display:none;
+
+    max-width:220px;
+}
+
+.tooltip strong{
+    display:block;
+    color:#f4c83e;
+    margin-bottom:5px;
+}
+
+/* =========================================================
+   MODAL
+========================================================= */
+
+.modal-overlay{
+    position:fixed;
+    inset:0;
+    z-index:3000;
+
+    background:rgba(2,12,27,.68);
+
+    display:none;
+    align-items:center;
+    justify-content:center;
+
+    padding:20px;
+
+    backdrop-filter:blur(5px);
+}
+
+.modal-overlay.show{
+    display:flex;
+}
+
+.modal{
+    width:min(700px,100%);
+    max-height:90vh;
+    overflow:auto;
+
+    background:white;
+    border-radius:22px;
+
+    box-shadow:0 30px 100px rgba(0,0,0,.3);
+
+    animation:modalIn .22s ease;
+}
+
+@keyframes modalIn{
+    from{
+        opacity:0;
+        transform:translateY(20px) scale(.98);
+    }
+    to{
+        opacity:1;
+        transform:none;
+    }
+}
+
+.modal-header{
+    padding:20px 24px;
+    border-bottom:1px solid var(--border);
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+}
+
+.modal-header h3{
+    color:#10233f;
+}
+
+.close-modal{
+    border:0;
+    background:#f1f5f9;
+    width:36px;
+    height:36px;
+    border-radius:10px;
+}
+
+.modal-body{
+    padding:24px;
+}
+
+.stepper{
+    display:flex;
+    gap:6px;
+    margin-bottom:25px;
+}
+
+.step{
+    flex:1;
+    height:5px;
+    border-radius:5px;
+    background:#e2e8f0;
+}
+
+.step.active{
+    background:#1e5aa8;
+}
+
+.form-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:15px;
+}
+
+.form-grid .full{
+    grid-column:1/-1;
+}
+
+.modal-actions{
+    display:flex;
+    justify-content:flex-end;
+    gap:10px;
+    margin-top:24px;
+}
+
+/* =========================================================
+   DIGITAL TICKET
+========================================================= */
+
+.ticket{
+    max-width:450px;
+    margin:auto;
+
+    border-radius:20px;
+    overflow:hidden;
+
+    background:
+        linear-gradient(145deg,#0a1b33,#123f70);
+
+    color:white;
+
+    box-shadow:0 20px 50px rgba(9,30,58,.25);
+}
+
+.ticket-header{
+    padding:20px;
+
+    display:flex;
+    justify-content:space-between;
+    border-bottom:1px dashed rgba(255,255,255,.35);
+}
+
+.ticket-brand{
+    font-weight:900;
+}
+
+.ticket-body{
+    padding:25px;
+}
+
+.ticket-match{
+    text-align:center;
+    margin-bottom:25px;
+}
+
+.ticket-match .small{
+    font-size:11px;
+    color:#b8c8dc;
+}
+
+.ticket-match h4{
+    margin-top:6px;
+    font-size:20px;
+}
+
+.ticket-data{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:15px;
+}
+
+.ticket-data div{
+    padding:10px;
+    background:rgba(255,255,255,.07);
+    border-radius:10px;
+}
+
+.ticket-data span{
+    display:block;
+    color:#a9bed8;
+    font-size:9px;
+    text-transform:uppercase;
+}
+
+.ticket-data strong{
+    display:block;
+    margin-top:4px;
+    font-size:13px;
+}
+
+.fake-qr{
+    width:125px;
+    height:125px;
+    margin:25px auto 5px;
+
+    background:
+        repeating-linear-gradient(
+            45deg,
+            #fff 0 3px,
+            #111 3px 6px
+        );
+
+    border:10px solid white;
+    border-radius:5px;
+}
+
+/* =========================================================
+   ADMIN
+========================================================= */
+
+.admin-container{
+    padding:35px 5%;
+}
+
+.admin-tabs{
+    display:flex;
+    gap:7px;
+    flex-wrap:wrap;
+    margin-bottom:25px;
+}
+
+.admin-tab{
+    border:1px solid var(--border);
+    background:white;
+    padding:10px 15px;
+    border-radius:10px;
+    font-weight:700;
+}
+
+.admin-tab.active{
+    background:#0b1f3a;
+    color:white;
+}
+
+.admin-panel{
+    display:none;
+}
+
+.admin-panel.active{
+    display:block;
+}
+
+.stats-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:15px;
+}
+
+.stat-card{
+    background:white;
+    padding:22px;
+    border-radius:17px;
+    border:1px solid var(--border);
+    box-shadow:0 8px 25px rgba(15,23,42,.05);
+}
+
+.stat-card span{
+    display:block;
+    color:#64748b;
+    font-size:11px;
+    text-transform:uppercase;
+    font-weight:800;
+}
+
+.stat-card strong{
+    display:block;
+    font-size:27px;
+    margin-top:7px;
+    color:#10233f;
+}
+
+.stat-card small{
+    display:block;
+    margin-top:7px;
+    color:#16a34a;
+}
+
+.admin-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:20px;
+    margin-top:20px;
+}
+
+.admin-card{
+    background:white;
+    padding:24px;
+    border:1px solid var(--border);
+    border-radius:18px;
+}
+
+.admin-card h3{
+    margin-bottom:18px;
+}
+
+.progress{
+    height:13px;
+    background:#e5e7eb;
+    border-radius:20px;
+    overflow:hidden;
+}
+
+.progress-bar{
+    height:100%;
+    background:linear-gradient(90deg,#1e5aa8,#4fa6e8);
+    border-radius:20px;
+}
+
+.table-wrap{
+    overflow:auto;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th,
+td{
+    text-align:left;
+    padding:12px;
+    border-bottom:1px solid var(--border);
+    font-size:12px;
+}
+
+th{
+    background:#f8fafc;
+    color:#64748b;
+}
+
+/* =========================================================
+   TOAST
+========================================================= */
+
+.toast-container{
+    position:fixed;
+    z-index:6000;
+
+    right:20px;
+    bottom:20px;
+
+    display:grid;
+    gap:10px;
+}
+
+.toast{
+    background:#07182e;
+    color:white;
+
+    padding:13px 17px;
+
+    border-radius:12px;
+
+    box-shadow:0 12px 30px rgba(0,0,0,.2);
+
+    font-size:12px;
+
+    animation:toastIn .25s ease;
+}
+
+.toast.success{
+    border-left:4px solid #22c55e;
+}
+
+.toast.warning{
+    border-left:4px solid #eab308;
+}
+
+.toast.error{
+    border-left:4px solid #ef4444;
+}
+
+@keyframes toastIn{
+    from{
+        opacity:0;
+        transform:translateX(20px);
+    }
+    to{
+        opacity:1;
+        transform:none;
+    }
+}
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+footer{
+    background:#07182e;
+    color:#9eb0c7;
+    padding:25px 5%;
+    text-align:center;
+    font-size:11px;
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media(max-width:1150px){
+
+    .stadium-layout{
+        grid-template-columns:230px minmax(0,1fr);
+    }
+
+    .sidebar.right{
+        grid-column:1/-1;
+        border-left:0;
+        border-top:1px solid var(--border);
+    }
+
+    .selected-list{
+        max-height:none;
+        grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+    }
+
+}
+
+@media(max-width:900px){
+
+    .nav{
+        display:none;
+    }
+
+    .stadium-layout{
+        grid-template-columns:1fr;
+    }
+
+    .sidebar{
+        border-right:0;
+        border-bottom:1px solid var(--border);
+    }
+
+    .stadium-area{
+        min-height:650px;
+    }
+
+    .stadium-viewport{
+        min-height:650px;
+    }
+
+    .stats-grid{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .admin-grid{
+        grid-template-columns:1fr;
+    }
+}
+
+@media(max-width:600px){
+
+    .header{
+        padding:0 14px;
+    }
+
+    .brand-text{
+        display:none;
+    }
+
+    .hero{
+        padding:55px 7%;
+    }
+
+    .hero h2{
+        font-size:47px;
+    }
+
+    .section{
+        padding:35px 5%;
+    }
+
+    .form-grid{
+        grid-template-columns:1fr;
+    }
+
+    .form-grid .full{
+        grid-column:auto;
+    }
+
+    .stats-grid{
+        grid-template-columns:1fr;
+    }
+
+    #stadiumSvg{
+        width:780px;
+        height:590px;
+    }
+
+}
+</style>
+</head>
+
+<body>
+
+<!-- ======================================================
+     HEADER
+======================================================= -->
+
+<header class="header">
+
+    <div class="brand">
+
+        <div class="brand-logo">
+            SN
+        </div>
+
+        <div class="brand-text">
+            <h1>ESTADIO SIERRA NEVADA</h1>
+            <span>SANTA MARTA · MAGDALENA · COLOMBIA</span>
+        </div>
+
+    </div>
+
+    <nav class="nav">
+
+        <button class="nav-btn active" data-page="home">
+            Inicio
+        </button>
+
+        <button class="nav-btn" data-page="matches">
+            Partidos
+        </button>
+
+        <button class="nav-btn" data-page="stadium">
+            Comprar
+        </button>
+
+        <button class="nav-btn" data-page="purchases">
+            Mis compras
+        </button>
+
+        <button class="nav-btn" data-page="admin">
+            Administración
+        </button>
+
+    </nav>
+
+    <div class="header-actions">
+
+        <button class="icon-btn" onclick="showPage('stadium')">
+            🛒
+            <span class="cart-badge" id="cartCount">0</span>
+        </button>
+
+    </div>
+
+</header>
+
+
+<main>
+
+<!-- ======================================================
+     HOME
+======================================================= -->
+
+<section id="home" class="page active">
+
+    <div class="hero">
+
+        <div class="hero-content">
+
+            <div class="eyebrow">
+                Experiencia deportiva · Simulador
+            </div>
+
+            <h2>
+                Vive el fútbol<br>
+                desde tu localidad.
+            </h2>
+
+            <p>
+                Selecciona tu partido, explora el mapa interactivo
+                del Estadio Sierra Nevada y elige exactamente
+                dónde quieres vivir el espectáculo.
+            </p>
+
+            <div class="hero-buttons">
+
+                <button
+                    class="btn btn-primary"
+                    onclick="showPage('matches')">
+                    VER PRÓXIMOS PARTIDOS
+                </button>
+
+                <button
+                    class="btn btn-light"
+                    onclick="showPage('stadium')">
+                    EXPLORAR ESTADIO
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <section class="section">
+
+        <div class="section-title">
+
+            <div>
+                <h2>Próximos partidos</h2>
+                <p>
+                    Selecciona el encuentro que quieres vivir.
+                </p>
+            </div>
+
+            <button
+                class="btn btn-outline"
+                onclick="showPage('matches')">
+                Ver todos
+            </button>
+
+        </div>
+
+        <div
+            id="homeMatches"
+            class="matches-grid">
+        </div>
+
+    </section>
+
+</section>
+
+
+<!-- ======================================================
+     MATCHES
+======================================================= -->
+
+<section id="matches" class="page">
+
+    <section class="section">
+
+        <div class="section-title">
+
+            <div>
+                <h2>Próximos partidos</h2>
+
+                <p>
+                    Selecciona un partido para comenzar
+                    la compra de entradas.
+                </p>
+            </div>
+
+        </div>
+
+        <div
+            id="matchesGrid"
+            class="matches-grid">
+        </div>
+
+    </section>
+
+</section>
+
+
+<!-- ======================================================
+     STADIUM
+======================================================= -->
+
+<section id="stadium" class="page">
+
+<div class="stadium-layout">
+
+    <!-- LEFT SIDEBAR -->
+
+    <aside class="sidebar">
+
+        <div class="panel-title">
+            CONFIGURAR PARTIDO
+        </div>
+
+        <div class="form-group">
+
+            <label>
+                Partido
+            </label>
+
+            <select id="matchSelect">
+            </select>
+
+        </div>
+
+
+        <div class="panel-title" style="margin-top:25px;">
+            BUSCAR LOCALIDAD
+        </div>
+
+        <div class="form-group">
+
+            <input
+                id="seatSearch"
+                type="text"
+                placeholder="Ej. BLACK-12-18">
+
+        </div>
+
+
+        <div class="panel-title" style="margin-top:25px;">
+            CATEGORÍAS
+        </div>
+
+        <div
+            id="categoryFilters"
+            class="category-filter">
+        </div>
+
+
+        <div class="panel-title" style="margin-top:25px;">
+            ESTADOS
+        </div>
+
+        <div class="status-list">
+
+            <label class="status-item">
+                <input
+                    type="checkbox"
+                    checked
+                    data-status-filter="available">
+                <span
+                    class="status-dot"
+                    style="background:#22c55e;">
+                </span>
+                Disponibles
+            </label>
+
+            <label class="status-item">
+                <input
+                    type="checkbox"
+                    checked
+                    data-status-filter="sold">
+                <span
+                    class="status-dot"
+                    style="background:#64748b;">
+                </span>
+                Vendidos
+            </label>
+
+            <label class="status-item">
+                <input
+                    type="checkbox"
+                    checked
+                    data-status-filter="reserved">
+                <span
+                    class="status-dot"
+                    style="background:#94a3b8;">
+                </span>
+                Reservados
+            </label>
+
+        </div>
+
+
+        <div
+            style="
+                margin-top:25px;
+                padding:15px;
+                background:#f8fafc;
+                border-radius:14px;
+                border:1px solid #e2e8f0;
+            ">
+
+            <div
+                style="
+                    font-size:10px;
+                    color:#64748b;
+                    text-transform:uppercase;
+                    font-weight:800;
+                ">
+                Partido seleccionado
+            </div>
+
+            <div
+                id="selectedMatchName"
+                style="
+                    font-size:13px;
+                    font-weight:900;
+                    margin-top:6px;
+                    color:#10233f;
+                ">
+            </div>
+
+        </div>
+
+    </aside>
+
+
+    <!-- STADIUM -->
+
+    <div class="stadium-area">
+
+        <div class="stadium-toolbar">
+
+            <div class="toolbar-group">
+
+                <button
+                    class="toolbar-btn"
+                    onclick="zoomStadium(.15)">
+                    +
+                </button>
+
+                <button
+                    class="toolbar-btn"
+                    onclick="zoomStadium(-.15)">
+                    −
+                </button>
+
+                <button
+                    class="toolbar-btn"
+                    onclick="resetStadium()">
+                    ⛶
+                </button>
+
+            </div>
+
+            <div class="toolbar-group">
+
+                <button
+                    class="toolbar-btn"
+                    onclick="centerStadium()">
+                    ⌾
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <div
+            id="stadiumViewport"
+            class="stadium-viewport">
+
+            <svg
+                id="stadiumSvg"
+                viewBox="0 0 900 680"
+                xmlns="http://www.w3.org/2000/svg">
+
+                <defs>
+
+                    <filter id="shadow">
+                        <feDropShadow
+                            dx="0"
+                            dy="8"
+                            stdDeviation="8"
+                            flood-opacity=".18"/>
+                    </filter>
+
+                    <linearGradient
+                        id="standGradient"
+                        x1="0"
+                        y1="0"
+                        x2="1"
+                        y2="1">
+
+                        <stop
+                            offset="0%"
+                            stop-color="#f7fafc"/>
+
+                        <stop
+                            offset="100%"
+                            stop-color="#cdd8e2"/>
+
+                    </linearGradient>
+
+                </defs>
+
+
+                <!-- OUTER STADIUM -->
+
+                <rect
+                    x="65"
+                    y="45"
+                    width="770"
+                    height="590"
+                    rx="120"
+                    class="stadium-shell"
+                    filter="url(#shadow)"/>
+
+
+                <!-- NORTH STAND -->
+
+                <path
+                    id="northStand"
+                    class="stand"
+                    fill="url(#standGradient)"
+                    d="
+                    M 170 115
+                    Q 450 45 730 115
+                    L 685 220
+                    Q 450 165 215 220
+                    Z
+                    "/>
+
+                <text
+                    x="450"
+                    y="108"
+                    text-anchor="middle"
+                    class="stand-label">
+                    TRIBUNA NORTE
+                </text>
+
+
+                <!-- SOUTH STAND -->
+
+                <path
+                    id="southStand"
+                    class="stand"
+                    fill="url(#standGradient)"
+                    d="
+                    M 215 460
+                    Q 450 515 685 460
+                    L 730 565
+                    Q 450 635 170 565
+                    Z
+                    "/>
+
+                <text
+                    x="450"
+                    y="575"
+                    text-anchor="middle"
+                    class="stand-label">
+                    TRIBUNA SUR
+                </text>
+
+
+                <!-- WEST STAND -->
+
+                <path
+                    id="westStand"
+                    class="stand"
+                    fill="url(#standGradient)"
+                    d="
+                    M 105 180
+                    Q 55 340 105 500
+                    L 220 450
+                    Q 185 340 220 230
+                    Z
+                    "/>
+
+                <text
+                    x="105"
+                    y="340"
+                    text-anchor="middle"
+                    class="stand-label"
+                    transform="rotate(-90 105 340)">
+                    OCCIDENTAL
+                </text>
+
+
+                <!-- EAST STAND -->
+
+                <path
+                    id="eastStand"
+                    class="stand"
+                    fill="url(#standGradient)"
+                    d="
+                    M 795 180
+                    Q 845 340 795 500
+                    L 680 450
+                    Q 715 340 680 230
+                    Z
+                    "/>
+
+                <text
+                    x="795"
+                    y="340"
+                    text-anchor="middle"
+                    class="stand-label"
+                    transform="rotate(90 795 340)">
+                    ORIENTAL
+                </text>
+
+
+                <!-- PITCH -->
+
+                <rect
+                    x="270"
+                    y="235"
+                    width="360"
+                    height="210"
+                    rx="8"
+                    class="pitch"/>
+
+                <!-- Pitch lines -->
+
+                <rect
+                    x="278"
+                    y="243"
+                    width="344"
+                    height="194"
+                    class="pitch-line"/>
+
+                <line
+                    x1="450"
+                    y1="243"
+                    x2="450"
+                    y2="437"
+                    class="pitch-line"/>
+
+                <circle
+                    cx="450"
+                    cy="340"
+                    r="42"
+                    class="pitch-line"/>
+
+                <circle
+                    cx="450"
+                    cy="340"
+                    r="4"
+                    fill="white"/>
+
+                <!-- Goals -->
+
+                <rect
+                    x="265"
+                    y="300"
+                    width="14"
+                    height="80"
+                    fill="none"
+                    stroke="white"
+                    stroke-width="3"/>
+
+                <rect
+                    x="621"
+                    y="300"
+                    width="14"
+                    height="80"
+                    fill="none"
+                    stroke="white"
+                    stroke-width="3"/>
+
+                <!-- penalty boxes -->
+
+                <rect
+                    x="278"
+                    y="285"
+                    width="72"
+                    height="110"
+                    class="pitch-line"/>
+
+                <rect
+                    x="550"
+                    y="285"
+                    width="72"
+                    height="110"
+                    class="pitch-line"/>
+
+                <!-- SEAT GROUPS ARE INSERTED HERE -->
+
+                <g id="seatsLayer"></g>
+
+            </svg>
+
+        </div>
+
+    </div>
+
+
+    <!-- RIGHT CART -->
+
+    <aside class="sidebar right">
+
+        <div class="panel-title">
+            TU COMPRA
+        </div>
+
+        <div
+            id="cartMatch"
+            style="
+                font-size:13px;
+                font-weight:900;
+                color:#10233f;
+                margin-bottom:18px;
+            ">
+        </div>
+
+        <div
+            id="cartContent">
+        </div>
+
+    </aside>
+
+</div>
+
+</section>
+
+
+<!-- ======================================================
+     PURCHASES
+======================================================= -->
+
+<section id="purchases" class="page">
+
+    <section class="section">
+
+        <div class="section-title">
+
+            <div>
+                <h2>Mis compras</h2>
+
+                <p>
+                    Consulta las entradas adquiridas
+                    en esta simulación.
+                </p>
+            </div>
+
+        </div>
+
+        <div id="purchaseList">
+        </div>
+
+    </section>
+
+</section>
+
+
+<!-- ======================================================
+     ADMIN
+======================================================= -->
+
+<section id="admin" class="page">
+
+    <div class="admin-container">
+
+        <div class="section-title">
+
+            <div>
+                <h2>Panel administrativo</h2>
+
+                <p>
+                    Gestión del sistema de boletería.
+                </p>
+            </div>
+
+        </div>
+
+
+        <div class="admin-tabs">
+
+            <button
+                class="admin-tab active"
+                data-admin="dashboard">
+                Dashboard
+            </button>
+
+            <button
+                class="admin-tab"
+                data-admin="matchesAdmin">
+                Partidos
+            </button>
+
+            <button
+                class="admin-tab"
+                data-admin="seatsAdmin">
+                Localidades
+            </button>
+
+            <button
+                class="admin-tab"
+                data-admin="categoriesAdmin">
+                Categorías
+            </button>
+
+        </div>
+
+
+        <!-- DASHBOARD -->
+
+        <div
+            id="dashboard"
+            class="admin-panel active">
+
+            <div
+                id="adminStats"
+                class="stats-grid">
+            </div>
+
+
+            <div class="admin-grid">
+
+                <div class="admin-card">
+
+                    <h3>
+                        Ocupación del estadio
+                    </h3>
+
+                    <div
+                        style="
+                            display:flex;
+                            justify-content:space-between;
+                            margin-bottom:10px;
+                        ">
+
+                        <strong
+                            id="occupancyText">
+                            0%
+                        </strong>
+
+                        <span
+                            style="
+                                color:#64748b;
+                                font-size:12px;
+                            ">
+                            Capacidad total
+                        </span>
+
+                    </div>
+
+                    <div class="progress">
+
+                        <div
+                            id="occupancyBar"
+                            class="progress-bar"
+                            style="width:0%;">
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="admin-card">
+
+                    <h3>
+                        Recaudo por categoría
+                    </h3>
+
+                    <div id="categoryRevenue">
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- MATCH ADMIN -->
+
+        <div
+            id="matchesAdmin"
+            class="admin-panel">
+
+            <div class="admin-card">
+
+                <h3>
+                    Crear nuevo partido
+                </h3>
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+
+                        <label>
+                            Equipo local
+                        </label>
+
+                        <input
+                            id="newHome"
+                            value="Unión Magdalena">
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label>
+                            Equipo visitante
+                        </label>
+
+                        <input
+                            id="newAway"
+                            placeholder="Equipo visitante">
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label>
+                            Fecha
+                        </label>
+
+                        <input
+                            id="newDate"
+                            type="date">
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label>
+                            Hora
+                        </label>
+
+                        <input
+                            id="newTime"
+                            type="time"
+                            value="16:00">
+
+                    </div>
+
+                    <div class="form-group full">
+
+                        <label>
+                            Competición
+                        </label>
+
+                        <input
+                            id="newCompetition"
+                            value="Liga Colombiana">
+
+                    </div>
+
+                </div>
+
+                <button
+                    class="btn btn-primary"
+                    onclick="createMatch()">
+                    + CREAR PARTIDO
+                </button>
+
+            </div>
+
+
+            <div
+                class="admin-card"
+                style="margin-top:20px;">
+
+                <h3>
+                    Partidos registrados
+                </h3>
+
+                <div
+                    id="adminMatchesTable"
+                    class="table-wrap">
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- SEATS ADMIN -->
+
+        <div
+            id="seatsAdmin"
+            class="admin-panel">
+
+            <div class="admin-card">
+
+                <h3>
+                    Gestión de localidades
+                </h3>
+
+                <div
+                    id="seatAdminTable"
+                    class="table-wrap">
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- CATEGORIES -->
+
+        <div
+            id="categoriesAdmin"
+            class="admin-panel">
+
+            <div class="admin-card">
+
+                <h3>
+                    Categorías de boletería
+                </h3>
+
+                <div
+                    id="categoriesAdminTable"
+                    class="table-wrap">
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+</main>
+
+
+<!-- ======================================================
+     FOOTER
+======================================================= -->
+
+<footer>
+
+    <strong>SIMULADOR ESTADIO SIERRA NEVADA</strong>
+
+    <br>
+
+    Prototipo interactivo · Datos de demostración ·
+    No corresponde a una plataforma oficial de boletería.
+
+</footer>
+
+
+<!-- ======================================================
+     TOOLTIP
+======================================================= -->
+
+<div
+    id="seatTooltip"
+    class="tooltip">
+</div>
+
+
+<!-- ======================================================
+     PURCHASE MODAL
+======================================================= -->
+
+<div
+    id="purchaseModal"
+    class="modal-overlay">
+
+    <div class="modal">
+
+        <div class="modal-header">
+
+            <h3 id="modalTitle">
+                Finalizar compra
+            </h3>
+
+            <button
+                class="close-modal"
+                onclick="closePurchaseModal()">
+                ×
+            </button>
+
+        </div>
+
+
+        <div class="modal-body">
+
+            <div class="stepper">
+
+                <div
+                    class="step active"
+                    id="stepBar1">
+                </div>
+
+                <div
+                    class="step"
+                    id="stepBar2">
+                </div>
+
+                <div
+                    class="step"
+                    id="stepBar3">
+                </div>
+
+            </div>
+
+
+            <!-- STEP 1 -->
+
+            <div id="purchaseStep1">
+
+                <h3>
+                    Revisa tu selección
+                </h3>
+
+                <div
+                    id="purchaseReview"
+                    style="margin-top:18px;">
+                </div>
+
+            </div>
+
+
+            <!-- STEP 2 -->
+
+            <div
+                id="purchaseStep2"
+                style="display:none;">
+
+                <h3>
+                    Datos del comprador
+                </h3>
+
+                <div
+                    class="form-grid"
+                    style="margin-top:20px;">
+
+                    <div class="form-group">
+
+                        <label>
+                            Nombre completo
+                        </label>
+
+                        <input
+                            id="buyerName"
+                            placeholder="Nombre completo">
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label>
+                            Documento
+                        </label>
+
+                        <input
+                            id="buyerDocument"
+                            placeholder="Número de documento">
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label>
+                            Correo electrónico
+                        </label>
+
+                        <input
+                            id="buyerEmail"
+                            type="email"
+                            placeholder="correo@ejemplo.com">
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label>
+                            Teléfono
+                        </label>
+
+                        <input
+                            id="buyerPhone"
+                            placeholder="300 000 0000">
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- STEP 3 -->
+
+            <div
+                id="purchaseStep3"
+                style="display:none;">
+
+                <h3>
+                    Método de pago
+                </h3>
+
+                <div
+                    style="
+                        display:grid;
+                        gap:10px;
+                        margin-top:20px;
+                    ">
+
+                    <label class="filter-item"
+                           style="border:1px solid #e2e8f0;">
+
+                        <input
+                            type="radio"
+                            name="payment"
+                            value="Tarjeta débito"
+                            checked>
+
+                        💳 Tarjeta débito
+
+                    </label>
+
+                    <label class="filter-item"
+                           style="border:1px solid #e2e8f0;">
+
+                        <input
+                            type="radio"
+                            name="payment"
+                            value="Tarjeta crédito">
+
+                        💳 Tarjeta crédito
+
+                    </label>
+
+                    <label class="filter-item"
+                           style="border:1px solid #e2e8f0;">
+
+                        <input
+                            type="radio"
+                            name="payment"
+                            value="PSE">
+
+                        🏦 PSE
+
+                    </label>
+
+                    <label class="filter-item"
+                           style="border:1px solid #e2e8f0;">
+
+                        <input
+                            type="radio"
+                            name="payment"
+                            value="Nequi">
+
+                        📱 Nequi
+
+                    </label>
+
+                    <label class="filter-item"
+                           style="border:1px solid #e2e8f0;">
+
+                        <input
+                            type="radio"
+                            name="payment"
+                            value="Daviplata">
+
+                        📱 Daviplata
+
+                    </label>
+
+                </div>
+
+                <div
+                    style="
+                        margin-top:18px;
+                        padding:13px;
+                        background:#fffbeb;
+                        border:1px solid #fde68a;
+                        border-radius:10px;
+                        color:#92400e;
+                        font-size:11px;
+                    ">
+
+                    ⚠️ Este es un simulador.
+                    No se realizan transacciones reales.
+
+                </div>
+
+            </div>
+
+
+            <!-- SUCCESS -->
+
+            <div
+                id="purchaseSuccess"
+                style="display:none;">
+
+                <div
+                    style="
+                        text-align:center;
+                        margin-bottom:25px;
+                    ">
+
+                    <div
+                        style="
+                            width:70px;
+                            height:70px;
+                            margin:auto;
+                            border-radius:50%;
+                            background:#dcfce7;
+                            color:#16a34a;
+                            display:flex;
+                            align-items:center;
+                            justify-content:center;
+                            font-size:35px;
+                        ">
+                        ✓
+                    </div>
+
+                    <h2
+                        style="margin-top:15px;">
+                        ¡Compra exitosa!
+                    </h2>
+
+                    <p
+                        style="
+                            color:#64748b;
+                            margin-top:5px;
+                        ">
+                        Tu entrada digital ha sido generada.
+                    </p>
+
+                </div>
+
+                <div id="digitalTicket">
+                </div>
+
+            </div>
+
+
+            <div
+                id="purchaseActions"
+                class="modal-actions">
+
+                <button
+                    class="btn btn-outline"
+                    onclick="closePurchaseModal()">
+                    Cancelar
+                </button>
+
+                <button
+                    id="purchaseNextBtn"
+                    class="btn btn-primary"
+                    onclick="nextPurchaseStep()">
+                    CONTINUAR
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ======================================================
+     TOAST
+======================================================= -->
+
+<div
+    id="toastContainer"
+    class="toast-container">
+</div>
+
+
+<script>
+/* =========================================================
+   CONFIGURACIÓN
+========================================================= */
+
+const STORAGE_KEY = "sierraNevadaSimulator_v1";
+
+
+/* =========================================================
+   CATEGORÍAS
+========================================================= */
+
+const defaultCategories = [
+
+    {
+        id:"BLACK",
+        name:"BLACK",
+        price:180000,
+        color:"#111318",
+        description:"Categoría premium"
+    },
+
+    {
+        id:"MR_BLACK",
+        name:"MR BLACK",
+        price:220000,
+        color:"#5a4630",
+        description:"Categoría VIP superior"
+    },
+
+    {
+        id:"ALL_BLACK",
+        name:"ALL BLACK",
+        price:280000,
+        color:"#050505",
+        description:"Categoría premium especial"
+    },
+
+    {
+        id:"SAYAYIN",
+        name:"EL SAYAYÍN",
+        price:150000,
+        color:"#e3ad19",
+        description:"Categoría especial"
+    },
+
+    {
+        id:"PREFERENCIAL",
+        name:"PREFERENCIAL",
+        price:110000,
+        color:"#2675d8",
+        description:"Tribuna preferencial"
+    },
+
+    {
+        id:"GENERAL",
+        name:"GENERAL",
+        price:75000,
+        color:"#229447",
+        description:"Tribuna general"
+    },
+
+    {
+        id:"POPULAR",
+        name:"POPULAR",
+        price:45000,
+        color:"#c83d42",
+        description:"Localidad popular"
+    }
+
+];
+
+
+/* =========================================================
+   PARTIDOS
+========================================================= */
+
+const defaultMatches = [
+
+    {
+        id:"M001",
+        home:"Unión Magdalena",
+        away:"Atlético Nacional",
+        date:"2026-10-18",
+        time:"16:00",
+        competition:"Liga Colombiana",
+        status:"Venta abierta"
+    },
+
+    {
+        id:"M002",
+        home:"Unión Magdalena",
+        away:"Millonarios",
+        date:"2026-10-25",
+        time:"18:10",
+        competition:"Liga Colombiana",
+        status:"Venta abierta"
+    },
+
+    {
+        id:"M003",
+        home:"Unión Magdalena",
+        away:"Junior",
+        date:"2026-11-01",
+        time:"17:00",
+        competition:"Liga Colombiana",
+        status:"Venta abierta"
+    },
+
+    {
+        id:"M004",
+        home:"Unión Magdalena",
+        away:"América de Cali",
+        date:"2026-11-08",
+        time:"16:00",
+        competition:"Liga Colombiana",
+        status:"Venta abierta"
+    }
+
+];
+
+
+/* =========================================================
+   ESTADO
+========================================================= */
+
+let db = loadDatabase();
+
+let selectedSeats = [];
+
+let currentMatchId = db.matches[0]?.id || null;
+
+let purchaseStep = 1;
+
+let zoom = 1;
+
+let panX = 0;
+
+let panY = 0;
+
+let dragging = false;
+
+let dragStartX = 0;
+
+let dragStartY = 0;
+
+let initialPanX = 0;
+
+let initialPanY = 0;
+
+
+/* =========================================================
+   DATABASE
+========================================================= */
+
+function createInitialDatabase(){
+
+    return {
+
+        categories:structuredClone(defaultCategories),
+
+        matches:structuredClone(defaultMatches),
+
+        seats:[],
+
+        purchases:[]
+
+    };
+
+}
+
+
+function loadDatabase(){
+
+    try{
+
+        const saved =
+            localStorage.getItem(STORAGE_KEY);
+
+        if(saved){
+
+            const data = JSON.parse(saved);
+
+            if(
+                data &&
+                data.categories &&
+                data.matches &&
+                data.seats &&
+                data.purchases
+            ){
+
+                return data;
+
+            }
+
+        }
+
+    }catch(error){
+
+        console.error(error);
+
+    }
+
+    const initial = createInitialDatabase();
+
+    generateSeats(initial);
+
+    saveDatabase(initial);
+
+    return initial;
+
+}
+
+
+function saveDatabase(data=db){
+
+    localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify(data)
+    );
+
+}
+
+
+/* =========================================================
+   GENERACIÓN DE LOCALIDADES
+========================================================= */
+
+function generateSeats(database){
+
+    database.seats = [];
+
+    let counter = 1;
+
+
+    /*
+       NORTE
+       8 filas × 32 puestos
+    */
+
+    for(let row=1;row<=8;row++){
+
+        for(let col=1;col<=32;col++){
+
+            const category =
+                row <= 2
+                ? "ALL_BLACK"
+                : row <= 4
+                    ? "MR_BLACK"
+                    : "BLACK";
+
+            database.seats.push(
+                createSeat(
+                    counter++,
+                    "NORTE",
+                    row,
+                    col,
+                    category,
+                    210 + col * 10,
+                    145 + row * 11
+                )
+            );
+
+        }
+
+    }
+
+
+    /*
+       SUR
+    */
+
+    for(let row=1;row<=8;row++){
+
+        for(let col=1;col<=32;col++){
+
+            const category =
+                row <= 2
+                ? "SAYAYIN"
+                : row <= 5
+                    ? "GENERAL"
+                    : "POPULAR";
+
+            database.seats.push(
+                createSeat(
+                    counter++,
+                    "SUR",
+                    row,
+                    col,
+                    category,
+                    210 + col * 10,
+                    525 - row * 10
+                )
+            );
+
+        }
+
+    }
+
+
+    /*
+       OCCIDENTAL
+    */
+
+    for(let row=1;row<=11;row++){
+
+        for(let col=1;col<=10;col++){
+
+            const category =
+                row <= 3
+                ? "MR_BLACK"
+                : row <= 6
+                    ? "BLACK"
+                    : "PREFERENCIAL";
+
+            database.seats.push(
+                createSeat(
+                    counter++,
+                    "OCCIDENTAL",
+                    row,
+                    col,
+                    category,
+                    115 + row * 7,
+                    215 + col * 24
+                )
+            );
+
+        }
+
+    }
+
+
+    /*
+       ORIENTAL
+    */
+
+    for(let row=1;row<=11;row++){
+
+        for(let col=1;col<=10;col++){
+
+            const category =
+                row <= 2
+                ? "ALL_BLACK"
+                : row <= 5
+                    ? "SAYAYIN"
+                    : "GENERAL";
+
+            database.seats.push(
+                createSeat(
+                    counter++,
+                    "ORIENTAL",
+                    row,
+                    col,
+                    category,
+                    785 - row * 7,
+                    215 + col * 24
+                )
+            );
+
+        }
+
+    }
+
+
+    /*
+       Estados iniciales.
+    */
+
+    database.seats.forEach((seat,index)=>{
+
+        const random = Math.random();
+
+        if(random < .14){
+
+            seat.state="sold";
+
+        }else if(random < .19){
+
+            seat.state="reserved";
+
+        }else if(random < .205){
+
+            seat.state="blocked";
+
+        }else{
+
+            seat.state="available";
+
+        }
+
+    });
+
+}
+
+
+function createSeat(
+    counter,
+    sector,
+    row,
+    number,
+    category,
+    x,
+    y
+){
+
+    const categoryData =
+        defaultCategories.find(
+            c=>c.id===category
+        );
+
+    return {
+
+        id:`${category}-${row}-${number}-${counter}`,
+
+        shortId:`${category}-${row}-${number}`,
+
+        sector,
+
+        row,
+
+        number,
+
+        category,
+
+        price:categoryData.price,
+
+        state:"available",
+
+        x,
+
+        y
+
+    };
+
+}
+
+
+/* =========================================================
+   FORMATEADORES
+========================================================= */
+
+function currency(value){
+
+    return new Intl.NumberFormat(
+        "es-CO",
+        {
+            style:"currency",
+            currency:"COP",
+            maximumFractionDigits:0
+        }
+    ).format(value);
+
+}
+
+
+function formatDate(date){
+
+    if(!date) return "";
+
+    return new Intl.DateTimeFormat(
+        "es-CO",
+        {
+            weekday:"long",
+            day:"numeric",
+            month:"long",
+            year:"numeric"
+        }
+    ).format(
+        new Date(date+"T12:00:00")
+    );
+
+}
+
+
+function getCategory(id){
+
+    return db.categories.find(
+        c=>c.id===id
+    );
+
+}
+
+
+function getMatch(){
+
+    return db.matches.find(
+        m=>m.id===currentMatchId
+    );
+
+}
+
+
+/* =========================================================
+   NAVEGACIÓN
+========================================================= */
+
+function showPage(pageId){
+
+    document
+        .querySelectorAll(".page")
+        .forEach(page=>{
+            page.classList.remove("active");
+        });
+
+    const page =
+        document.getElementById(pageId);
+
+    if(page){
+
+        page.classList.add("active");
+
+    }
+
+    document
+        .querySelectorAll(".nav-btn")
+        .forEach(button=>{
+
+            button.classList.toggle(
+                "active",
+                button.dataset.page===pageId
+            );
+
+        });
+
+    window.scrollTo({
+        top:0,
+        behavior:"smooth"
+    });
+
+    if(pageId==="stadium"){
+
+        renderStadium();
+
+        updateCart();
+
+    }
+
+    if(pageId==="purchases"){
+
+        renderPurchases();
+
+    }
+
+    if(pageId==="admin"){
+
+        renderAdmin();
+
+    }
+
+}
+
+
+/* =========================================================
+   PARTIDOS
+========================================================= */
+
+function renderMatches(){
+
+    const containers = [
+
+        document.getElementById("matchesGrid"),
+
+        document.getElementById("homeMatches")
+
+    ];
+
+    containers.forEach(container=>{
+
+        if(!container) return;
+
+        container.innerHTML="";
+
+        db.matches.forEach(match=>{
+
+            const card =
+                document.createElement("div");
+
+            card.className="match-card";
+
+            card.innerHTML=`
+
+                <div class="match-top">
+
+                    <span>
+                        ${escapeHTML(match.competition)}
+                    </span>
+
+                    <span>
+                        ${escapeHTML(match.status)}
+                    </span>
+
+                </div>
+
+
+                <div class="match-body">
+
+                    <div class="teams">
+
+                        <div>
+
+                            <div class="team-logo">
+                                🔵
+                            </div>
+
+                            <div class="team-name">
+                                ${escapeHTML(match.home)}
+                            </div>
+
+                        </div>
+
+
+                        <div class="vs">
+                            VS
+                        </div>
+
+
+                        <div>
+
+                            <div class="team-logo">
+                                ⚽
+                            </div>
+
+                            <div class="team-name">
+                                ${escapeHTML(match.away)}
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="match-info">
+
+                        <div>
+                            📅 ${formatDate(match.date)}
+                        </div>
+
+                        <div>
+                            🕒 ${escapeHTML(match.time)}
+                        </div>
+
+                        <div>
+                            🏟️ Estadio Sierra Nevada
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="match-footer">
+
+                    <button
+                        class="btn btn-primary"
+                        style="width:100%;"
+                        onclick="selectMatchAndBuy('${match.id}')">
+
+                        COMPRAR ENTRADAS
+
+                    </button>
+
+                </div>
+
+            `;
+
+            container.appendChild(card);
+
+        });
+
+    });
+
+}
+
+
+function selectMatchAndBuy(id){
+
+    currentMatchId=id;
+
+    selectedSeats=[];
+
+    populateMatchSelect();
+
+    updateCart();
+
+    showPage("stadium");
+
+    toast(
+        "Partido seleccionado correctamente.",
+        "success"
+    );
+
+}
+
+
+/* =========================================================
+   SELECT PARTIDO
+========================================================= */
+
+function populateMatchSelect(){
+
+    const select =
+        document.getElementById("matchSelect");
+
+    if(!select) return;
+
+    select.innerHTML="";
+
+    db.matches.forEach(match=>{
+
+        const option =
+            document.createElement("option");
+
+        option.value=match.id;
+
+        option.textContent =
+            `${match.home} vs ${match.away}`;
+
+        option.selected =
+            match.id===currentMatchId;
+
+        select.appendChild(option);
+
+    });
+
+    updateSelectedMatchText();
+
+}
+
+
+document
+    .getElementById("matchSelect")
+    ?.addEventListener(
+        "change",
+        event=>{
+
+            currentMatchId =
+                event.target.value;
+
+            selectedSeats=[];
+
+            updateSelectedMatchText();
+
+            updateCart();
+
+            renderStadium();
+
+        }
+    );
+
+
+function updateSelectedMatchText(){
+
+    const match=getMatch();
+
+    const target =
+        document.getElementById(
+            "selectedMatchName"
+        );
+
+    if(target && match){
+
+        target.textContent =
+            `${match.home} vs ${match.away}`;
+
+    }
+
+    const cartMatch =
+        document.getElementById("cartMatch");
+
+    if(cartMatch && match){
+
+        cartMatch.textContent =
+            `${match.home} vs ${match.away}`;
+
+    }
+
+}
+
+
+/* =========================================================
+   FILTROS
+========================================================= */
+
+function renderFilters(){
+
+    const container =
+        document.getElementById(
+            "categoryFilters"
+        );
+
+    container.innerHTML="";
+
+    db.categories.forEach(category=>{
+
+        const label =
+            document.createElement("label");
+
+        label.className="filter-item";
+
+        label.innerHTML=`
+
+            <input
+                type="checkbox"
+                checked
+                data-category-filter="${category.id}">
+
+            <span
+                class="color-dot"
+                style="
+                    background:${category.color};
+                ">
+            </span>
+
+            ${escapeHTML(category.name)}
+
+        `;
+
+        container.appendChild(label);
+
+    });
+
+
+    container
+        .querySelectorAll(
+            "[data-category-filter]"
+        )
+        .forEach(input=>{
+
+            input.addEventListener(
+                "change",
+                renderStadium
+            );
+
+        });
+
+
+    document
+        .querySelectorAll(
+            "[data-status-filter]"
+        )
+        .forEach(input=>{
+
+            input.addEventListener(
+                "change",
+                renderStadium
+            );
+
+        });
+
+}
+
+
+/* =========================================================
+   SVG STADIUM
+========================================================= */
+
+function renderStadium(){
+
+    const layer =
+        document.getElementById(
+            "seatsLayer"
+        );
+
+    if(!layer) return;
+
+    layer.innerHTML="";
+
+
+    const selectedCategories =
+        [...document.querySelectorAll(
+            "[data-category-filter]:checked"
+        )].map(
+            input=>input.dataset.categoryFilter
+        );
+
+
+    const selectedStatuses =
+        [...document.querySelectorAll(
+            "[data-status-filter]:checked"
+        )].map(
+            input=>input.dataset.statusFilter
+        );
+
+
+    db.seats.forEach(seat=>{
+
+        const category =
+            getCategory(seat.category);
+
+        if(
+            !selectedCategories.includes(
+                seat.category
+            )
+        ){
+
+            return;
+
+        }
+
+
+        if(
+            !selectedStatuses.includes(
+                seat.state
+            ) &&
+            seat.state!=="selected"
+        ){
+
+            return;
+
+        }
+
+
+        const circle =
+            document.createElementNS(
+                "http://www.w3.org/2000/svg",
+                "circle"
+            );
+
+
+        /*
+           Ajuste visual para sectores
+        */
+
+        let x=seat.x;
+
+        let y=seat.y;
+
+        let radius=5;
+
+
+        /*
+           Orientación visual
+        */
+
+        if(seat.sector==="NORTE"){
+
+            x =
+                215 +
+                (seat.number-1)*15;
+
+            y =
+                135 +
+                (seat.row-1)*10;
+
+        }
+
+        if(seat.sector==="SUR"){
+
+            x =
+                215 +
+                (seat.number-1)*15;
+
+            y =
+                545 -
+                (seat.row-1)*10;
+
+        }
+
+        if(seat.sector==="OCCIDENTAL"){
+
+            x =
+                145 +
+                (seat.row-1)*7;
+
+            y =
+                225 +
+                (seat.number-1)*23;
+
+        }
+
+        if(seat.sector==="ORIENTAL"){
+
+            x =
+                755 -
+                (seat.row-1)*7;
+
+            y =
+                225 +
+                (seat.number-1)*23;
+
+        }
+
+
+        circle.setAttribute(
+            "cx",
+            x
+        );
+
+        circle.setAttribute(
+            "cy",
+            y
+        );
+
+        circle.setAttribute(
+            "r",
+            radius
+        );
+
+        circle.classList.add(
+            "seat"
+        );
+
+
+        if(seat.state==="sold"){
+
+            circle.classList.add("sold");
+
+        }
+
+        if(seat.state==="reserved"){
+
+            circle.classList.add("reserved");
+
+        }
+
+        if(seat.state==="blocked"){
+
+            circle.classList.add("blocked");
+
+        }
+
+        if(
+            selectedSeats.includes(
+                seat.id
+            )
+        ){
+
+            circle.classList.add(
+                "selected"
+            );
+
+        }
+
+
+        circle.style.fill =
+            category?.color || "#999";
+
+
+        circle.dataset.seatId =
+            seat.id;
+
+
+        circle.addEventListener(
+            "click",
+            event=>{
+
+                event.stopPropagation();
+
+                selectSeat(
+                    seat.id
+                );
+
+            }
+        );
+
+
+        circle.addEventListener(
+            "mouseenter",
+            event=>{
+
+                showSeatTooltip(
+                    event,
+                    seat
+                );
+
+            }
+        );
+
+
+        circle.addEventListener(
+            "mousemove",
+            event=>{
+
+                moveTooltip(event);
+
+            }
+        );
+
+
+        circle.addEventListener(
+            "mouseleave",
+            hideSeatTooltip
+        );
+
+
+        layer.appendChild(circle);
+
+    });
+
+}
+
+
+/* =========================================================
+   SELECCIONAR PUESTO
+========================================================= */
+
+function selectSeat(id){
+
+    const seat =
+        db.seats.find(
+            s=>s.id===id
+        );
+
+    if(!seat) return;
+
+
+    if(
+        seat.state!=="available" &&
+        !selectedSeats.includes(id)
+    ){
+
+        toast(
+            "Esta localidad no está disponible.",
+            "warning"
+        );
+
+        return;
+
+    }
+
+
+    if(
+        selectedSeats.includes(id)
+    ){
+
+        selectedSeats =
+            selectedSeats.filter(
+                seatId=>seatId!==id
+            );
+
+        toast(
+            "Localidad eliminada.",
+            "success"
+        );
+
+    }else{
+
+        selectedSeats.push(id);
+
+        toast(
+            `Localidad ${seat.shortId} seleccionada.`,
+            "success"
+        );
+
+    }
+
+
+    renderStadium();
+
+    updateCart();
+
+}
+
+
+/* =========================================================
+   CART
+========================================================= */
+
+function calculateCart(){
+
+    return selectedSeats.map(
+        id=>db.seats.find(
+            seat=>seat.id===id
+        )
+    ).filter(Boolean);
+
+}
+
+
+function calculateSubtotal(){
+
+    return calculateCart()
+        .reduce(
+            (sum,seat)=>
+                sum + seat.price,
+            0
+        );
+
+}
+
+
+function calculateService(){
+
+    return Math.round(
+        calculateSubtotal()*.05
+    );
+
+}
+
+
+function calculateTotal(){
+
+    return calculateSubtotal()+
+        calculateService();
+
+}
+
+
+function updateCart(){
+
+    updateSelectedMatchText();
+
+    const container =
+        document.getElementById(
+            "cartContent"
+        );
+
+    const seats =
+        calculateCart();
+
+
+    document.getElementById(
+        "cartCount"
+    ).textContent =
+        seats.length;
+
+
+    if(!container) return;
+
+
+    if(!seats.length){
+
+        container.innerHTML=`
+
+            <div class="cart-empty">
+
+                <div class="cart-empty-icon">
+                    🎟️
+                </div>
+
+                <strong>
+                    No has seleccionado localidades.
+                </strong>
+
+                <p
+                    style="
+                        font-size:11px;
+                        margin-top:7px;
+                    ">
+
+                    Haz clic sobre una localidad
+                    disponible en el estadio.
+
+                </p>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    container.innerHTML=`
+
+        <div class="selected-list">
+
+            ${seats.map(
+                seat=>{
+
+                    const category =
+                        getCategory(
+                            seat.category
+                        );
+
+                    return `
+
+                        <div
+                            class="selected-seat">
+
+                            <div>
+
+                                <strong>
+                                    ${escapeHTML(
+                                        category.name
+                                    )}
+                                </strong>
+
+                                <small>
+                                    ${seat.sector}
+                                    · Fila ${seat.row}
+                                    · Puesto ${seat.number}
+                                </small>
+
+                                <small>
+                                    ${currency(seat.price)}
+                                </small>
+
+                            </div>
+
+                            <button
+                                class="remove-seat"
+                                onclick="selectSeat('${seat.id}')">
+
+                                ×
+
+                            </button>
+
+                        </div>
+
+                    `;
+
+                }
+            ).join("")}
+
+        </div>
+
+
+        <div class="cart-summary">
+
+            <div class="summary-row">
+
+                <span>
+                    Entradas
+                </span>
+
+                <strong>
+                    ${seats.length}
+                </strong>
+
+            </div>
+
+
+            <div class="summary-row">
+
+                <span>
+                    Subtotal
+                </span>
+
+                <strong>
+                    ${currency(
+                        calculateSubtotal()
+                    )}
+                </strong>
+
+            </div>
+
+
+            <div class="summary-row">
+
+                <span>
+                    Servicio
+                </span>
+
+                <strong>
+                    ${currency(
+                        calculateService()
+                    )}
+                </strong>
+
+            </div>
+
+
+            <div class="summary-row summary-total">
+
+                <span>
+                    Total
+                </span>
+
+                <span>
+                    ${currency(
+                        calculateTotal()
+                    )}
+                </span>
+
+            </div>
+
+
+            <button
+                class="btn btn-primary full-btn"
+                onclick="openPurchaseModal()">
+
+                CONTINUAR COMPRA
+
+            </button>
+
+        </div>
+
+    `;
+
+}
+
+
+/* =========================================================
+   TOOLTIP
+========================================================= */
+
+function showSeatTooltip(event,seat){
+
+    const tooltip =
+        document.getElementById(
+            "seatTooltip"
+        );
+
+    const category =
+        getCategory(
+            seat.category
+        );
+
+
+    let statusText="Disponible";
+
+    if(seat.state==="sold")
+        statusText="Vendido";
+
+    if(seat.state==="reserved")
+        statusText="Reservado";
+
+    if(seat.state==="blocked")
+        statusText="Bloqueado";
+
+
+    tooltip.innerHTML=`
+
+        <strong>
+            ${escapeHTML(
+                category.name
+            )}
+        </strong>
+
+        Sector: ${seat.sector}<br>
+
+        Fila: ${seat.row}<br>
+
+        Puesto: ${seat.number}<br>
+
+        Precio: ${currency(seat.price)}<br>
+
+        Estado: ${statusText}
+
+    `;
+
+
+    tooltip.style.display="block";
+
+    moveTooltip(event);
+
+}
+
+
+function moveTooltip(event){
+
+    const tooltip =
+        document.getElementById(
+            "seatTooltip"
+        );
+
+    if(
+        !tooltip ||
+        tooltip.style.display==="none"
+    ){
+
+        return;
+
+    }
+
+
+    tooltip.style.left =
+        (event.clientX+15)+"px";
+
+    tooltip.style.top =
+        (event.clientY+15)+"px";
+
+}
+
+
+function hideSeatTooltip(){
+
+    const tooltip =
+        document.getElementById(
+            "seatTooltip"
+        );
+
+    tooltip.style.display="none";
+
+}
+
+
+/* =========================================================
+   ZOOM / PAN
+========================================================= */
+
+function applyTransform(){
+
+    const svg =
+        document.getElementById(
+            "stadiumSvg"
+        );
+
+    if(!svg) return;
+
+    svg.style.transform =
+        `translate(${panX}px, ${panY}px) scale(${zoom})`;
+
+}
+
+
+function zoomStadium(amount){
+
+    zoom =
+        Math.min(
+            2,
+            Math.max(
+                .55,
+                zoom+amount
+            )
+        );
+
+    applyTransform();
+
+}
+
+
+function resetStadium(){
+
+    zoom=1;
+
+    panX=0;
+
+    panY=0;
+
+    applyTransform();
+
+}
+
+
+function centerStadium(){
+
+    panX=0;
+
+    panY=0;
+
+    applyTransform();
+
+}
+
+
+/* =========================================================
+   DRAG MAP
+========================================================= */
+
+const viewport =
+    document.getElementById(
+        "stadiumViewport"
+    );
+
+
+viewport.addEventListener(
+    "pointerdown",
+    event=>{
+
+        if(
+            event.target.classList.contains(
+                "seat"
+            )
+        ){
+
+            return;
+
+        }
+
+
+        dragging=true;
+
+        viewport.classList.add(
+            "dragging"
+        );
+
+
+        dragStartX=event.clientX;
+
+        dragStartY=event.clientY;
+
+        initialPanX=panX;
+
+        initialPanY=panY;
+
+        viewport.setPointerCapture(
+            event.pointerId
+        );
+
+    }
+);
+
+
+viewport.addEventListener(
+    "pointermove",
+    event=>{
+
+        if(!dragging) return;
+
+        panX =
+            initialPanX+
+            (event.clientX-dragStartX);
+
+        panY =
+            initialPanY+
+            (event.clientY-dragStartY);
+
+        applyTransform();
+
+    }
+);
+
+
+viewport.addEventListener(
+    "pointerup",
+    event=>{
+
+        dragging=false;
+
+        viewport.classList.remove(
+            "dragging"
+        );
+
+        try{
+
+            viewport.releasePointerCapture(
+                event.pointerId
+            );
+
+        }catch(error){}
+
+    }
+);
+
+
+/* =========================================================
+   PURCHASE MODAL
+========================================================= */
+
+function openPurchaseModal(){
+
+    if(!selectedSeats.length){
+
+        toast(
+            "Selecciona al menos una localidad.",
+            "warning"
+        );
+
+        return;
+
+    }
+
+
+    purchaseStep=1;
+
+
+    document.getElementById(
+        "purchaseModal"
+    ).classList.add("show");
+
+
+    document.getElementById(
+        "purchaseStep1"
+    ).style.display="block";
+
+    document.getElementById(
+        "purchaseStep2"
+    ).style.display="none";
+
+    document.getElementById(
+        "purchaseStep3"
+    ).style.display="none";
+
+    document.getElementById(
+        "purchaseSuccess"
+    ).style.display="none";
+
+    document.getElementById(
+        "purchaseActions"
+    ).style.display="flex";
+
+
+    updatePurchaseReview();
+
+    updatePurchaseStepper();
+
+}
+
+
+function closePurchaseModal(){
+
+    document.getElementById(
+        "purchaseModal"
+    ).classList.remove("show");
+
+}
+
+
+function updatePurchaseReview(){
+
+    const seats =
+        calculateCart();
+
+    const match =
+        getMatch();
+
+
+    document.getElementById(
+        "purchaseReview"
+    ).innerHTML=`
+
+        <div
+            style="
+                padding:17px;
+                background:#f8fafc;
+                border-radius:13px;
+                border:1px solid #e2e8f0;
+            ">
+
+            <strong>
+                ${escapeHTML(match.home)}
+                vs
+                ${escapeHTML(match.away)}
+            </strong>
+
+            <div
+                style="
+                    color:#64748b;
+                    font-size:12px;
+                    margin-top:5px;
+                ">
+
+                ${formatDate(match.date)}
+                · ${escapeHTML(match.time)}
+
+            </div>
+
+        </div>
+
+
+        <div
+            style="
+                margin-top:15px;
+                display:grid;
+                gap:8px;
+            ">
+
+            ${seats.map(
+                seat=>{
+
+                    const category =
+                        getCategory(
+                            seat.category
+                        );
+
+                    return `
+
+                        <div
+                            style="
+                                display:flex;
+                                justify-content:space-between;
+                                padding:10px;
+                                border-bottom:1px solid #e2e8f0;
+                                font-size:12px;
+                            ">
+
+                            <span>
+
+                                ${category.name}
+
+                                · ${seat.sector}
+
+                                · F${seat.row}
+
+                                · P${seat.number}
+
+                            </span>
+
+                            <strong>
+
+                                ${currency(
+                                    seat.price
+                                )}
+
+                            </strong>
+
+                        </div>
+
+                    `;
+
+                }
+            ).join("")}
+
+        </div>
+
+
+        <div
+            style="
+                margin-top:18px;
+                padding-top:15px;
+                border-top:1px solid #e2e8f0;
+            ">
+
+            <div class="summary-row">
+
+                <span>
+                    Subtotal
+                </span>
+
+                <strong>
+                    ${currency(
+                        calculateSubtotal()
+                    )}
+                </strong>
+
+            </div>
+
+            <div class="summary-row">
+
+                <span>
+                    Servicio
+                </span>
+
+                <strong>
+                    ${currency(
+                        calculateService()
+                    )}
+                </strong>
+
+            </div>
+
+            <div class="summary-row summary-total">
+
+                <span>
+                    Total
+                </span>
+
+                <strong>
+                    ${currency(
+                        calculateTotal()
+                    )}
+                </strong>
+
+            </div>
+
+        </div>
+
+    `;
+
+}
+
+
+function updatePurchaseStepper(){
+
+    document
+        .querySelectorAll(".step")
+        .forEach(
+            (step,index)=>{
+
+                step.classList.toggle(
+                    "active",
+                    index < purchaseStep
+                );
+
+            }
+        );
+
+}
+
+
+function nextPurchaseStep(){
+
+    if(purchaseStep===1){
+
+        purchaseStep=2;
+
+        document.getElementById(
+            "purchaseStep1"
+        ).style.display="none";
+
+        document.getElementById(
+            "purchaseStep2"
+        ).style.display="block";
+
+        document.getElementById(
+            "purchaseStep3"
+        ).style.display="none";
+
+        document.getElementById(
+            "purchaseNextBtn"
+        ).textContent="CONTINUAR";
+
+        updatePurchaseStepper();
+
+        return;
+
+    }
+
+
+    if(purchaseStep===2){
+
+        const name =
+            document.getElementById(
+                "buyerName"
+            ).value.trim();
+
+        const documentNumber =
+            document.getElementById(
+                "buyerDocument"
+            ).value.trim();
+
+        const email =
+            document.getElementById(
+                "buyerEmail"
+            ).value.trim();
+
+        const phone =
+            document.getElementById(
+                "buyerPhone"
+            ).value.trim();
+
+
+        if(
+            !name ||
+            !documentNumber ||
+            !email ||
+            !phone
+        ){
+
+            toast(
+                "Completa todos los datos del comprador.",
+                "warning"
+            );
+
+            return;
+
+        }
+
+
+        purchaseStep=3;
+
+
+        document.getElementById(
+            "purchaseStep2"
+        ).style.display="none";
+
+        document.getElementById(
+            "purchaseStep3"
+        ).style.display="block";
+
+
+        document.getElementById(
+            "purchaseNextBtn"
+        ).textContent="CONFIRMAR COMPRA";
+
+
+        updatePurchaseStepper();
+
+        return;
+
+    }
+
+
+    if(purchaseStep===3){
+
+        confirmPurchase();
+
+    }
+
+}
+
+
+/* =========================================================
+   CONFIRMAR COMPRA
+========================================================= */
+
+function confirmPurchase(){
+
+    const seats =
+        calculateCart();
+
+    if(!seats.length){
+
+        toast(
+            "No hay localidades seleccionadas.",
+            "warning"
+        );
+
+        closePurchaseModal();
+
+        return;
+
+    }
+
+
+    /*
+       Verificación final.
+    */
+
+    const unavailable =
+        seats.find(
+            seat=>seat.state!=="available"
+        );
+
+
+    if(unavailable){
+
+        toast(
+            "Una de las localidades ya no está disponible.",
+            "error"
+        );
+
+        selectedSeats=[];
+
+        closePurchaseModal();
+
+        renderStadium();
+
+        updateCart();
+
+        return;
+
+    }
+
+
+    const match =
+        getMatch();
+
+
+    const buyer={
+
+        name:
+            document.getElementById(
+                "buyerName"
+            ).value.trim(),
+
+        document:
+            document.getElementById(
+                "buyerDocument"
+            ).value.trim(),
+
+        email:
+            document.getElementById(
+                "buyerEmail"
+            ).value.trim(),
+
+        phone:
+            document.getElementById(
+                "buyerPhone"
+            ).value.trim()
+
+    };
+
+
+    const payment =
+        document.querySelector(
+            'input[name="payment"]:checked'
+        )?.value ||
+        "Simulado";
+
+
+    const purchase={
+
+        id:
+            "SN-"+Date.now(),
+
+        matchId:match.id,
+
+        matchName:
+            `${match.home} vs ${match.away}`,
+
+        date:
+            match.date,
+
+        time:
+            match.time,
+
+        buyer,
+
+        payment,
+
+        seats:seats.map(
+            seat=>({
+
+                id:seat.id,
+
+                shortId:seat.shortId,
+
+                sector:seat.sector,
+
+                row:seat.row,
+
+                number:seat.number,
+
+                category:seat.category,
+
+                price:seat.price
+
+            })
+        ),
+
+        total:calculateTotal(),
+
+        createdAt:
+            new Date().toISOString()
+
+    };
+
+
+    /*
+       Marcar como vendidos.
+    */
+
+    seats.forEach(seat=>{
+
+        const original =
+            db.seats.find(
+                s=>s.id===seat.id
+            );
+
+        if(original){
+
+            original.state="sold";
+
+        }
+
+    });
+
+
+    db.purchases.push(
+        purchase
+    );
+
+
+    saveDatabase();
+
+
+    selectedSeats=[];
+
+
+    renderStadium();
+
+    updateCart();
+
+    renderPurchases();
+
+    renderAdmin();
+
+
+    showPurchaseSuccess(
+        purchase
+    );
+
+}
+
+
+/* =========================================================
+   BOLETA DIGITAL
+========================================================= */
+
+function showPurchaseSuccess(purchase){
+
+    purchaseStep=3;
+
+    document.getElementById(
+        "purchaseStep1"
+    ).style.display="none";
+
+    document.getElementById(
+        "purchaseStep2"
+    ).style.display="none";
+
+    document.getElementById(
+        "purchaseStep3"
+    ).style.display="none";
+
+    document.getElementById(
+        "purchaseSuccess"
+    ).style.display="block";
+
+    document.getElementById(
+        "purchaseActions"
+    ).style.display="none";
+
+
+    const firstSeat =
+        purchase.seats[0];
+
+
+    const category =
+        getCategory(
+            firstSeat.category
+        );
+
+
+    document.getElementById(
+        "digitalTicket"
+    ).innerHTML=`
+
+        <div class="ticket">
+
+            <div class="ticket-header">
+
+                <div>
+
+                    <div class="ticket-brand">
+                        ESTADIO SIERRA NEVADA
+                    </div>
+
+                    <small>
+                        SANTA MARTA · COLOMBIA
+                    </small>
+
+                </div>
+
+                <strong>
+                    SN
+                </strong>
+
+            </div>
+
+
+            <div class="ticket-body">
+
+                <div class="ticket-match">
+
+                    <div class="small">
+                        PARTIDO
+                    </div>
+
+                    <h4>
+                        ${escapeHTML(
+                            purchase.matchName
+                        )}
+                    </h4>
+
+                    <div class="small">
+
+                        ${formatDate(
+                            purchase.date
+                        )}
+                        ·
+                        ${purchase.time}
+
+                    </div>
+
+                </div>
+
+
+                <div class="ticket-data">
+
+                    <div>
+
+                        <span>
+                            Categoría
+                        </span>
+
+                        <strong>
+                            ${category.name}
+                        </strong>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            Localidades
+                        </span>
+
+                        <strong>
+                            ${purchase.seats.length}
+                        </strong>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            Sector
+                        </span>
+
+                        <strong>
+                            ${firstSeat.sector}
+                        </strong>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            Total
+                        </span>
+
+                        <strong>
+                            ${currency(
+                                purchase.total
+                            )}
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="fake-qr"></div>
+
+                <div
+                    style="
+                        text-align:center;
+                        font-size:10px;
+                        color:#b9cce2;
+                    ">
+
+                    ${purchase.id}
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <button
+            class="btn btn-primary"
+            style="
+                width:100%;
+                margin-top:18px;
+            "
+            onclick="closePurchaseModal()">
+
+            FINALIZAR
+
+        </button>
+
+    `;
+
+}
+
+
+/* =========================================================
+   MIS COMPRAS
+========================================================= */
+
+function renderPurchases(){
+
+    const container =
+        document.getElementById(
+            "purchaseList"
+        );
+
+    if(!container) return;
+
+
+    if(!db.purchases.length){
+
+        container.innerHTML=`
+
+            <div
+                class="admin-card"
+                style="text-align:center;">
+
+                <div style="font-size:45px;">
+                    🎟️
+                </div>
+
+                <h3 style="margin-top:10px;">
+                    No tienes compras todavía.
+                </h3>
+
+                <p
+                    style="
+                        color:#64748b;
+                        margin-top:7px;
+                    ">
+
+                    Selecciona un partido y compra
+                    tus localidades.
+
+                </p>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    container.innerHTML=
+        db.purchases
+            .slice()
+            .reverse()
+            .map(
+                purchase=>`
+
+                    <div
+                        class="admin-card"
+                        style="
+                            margin-bottom:15px;
+                        ">
+
+                        <div
+                            style="
+                                display:flex;
+                                justify-content:space-between;
+                                gap:15px;
+                                flex-wrap:wrap;
+                            ">
+
+                            <div>
+
+                                <span
+                                    style="
+                                        color:#64748b;
+                                        font-size:10px;
+                                    ">
+
+                                    COMPRA
+
+                                </span>
+
+                                <h3>
+                                    ${escapeHTML(
+                                        purchase.matchName
+                                    )}
+                                </h3>
+
+                                <p
+                                    style="
+                                        color:#64748b;
+                                        font-size:12px;
+                                        margin-top:5px;
+                                    ">
+
+                                    ${formatDate(
+                                        purchase.date
+                                    )}
+
+                                    ·
+
+                                    ${purchase.time}
+
+                                </p>
+
+                            </div>
+
+
+                            <strong
+                                style="
+                                    color:#123d70;
+                                    font-size:18px;
+                                ">
+
+                                ${currency(
+                                    purchase.total
+                                )}
+
+                            </strong>
+
+                        </div>
+
+
+                        <div
+                            style="
+                                margin-top:18px;
+                                display:flex;
+                                gap:8px;
+                                flex-wrap:wrap;
+                            ">
+
+                            ${purchase.seats.map(
+                                seat=>`
+
+                                    <span
+                                        style="
+                                            padding:7px 10px;
+                                            border-radius:8px;
+                                            background:#f1f5f9;
+                                            font-size:10px;
+                                            font-weight:800;
+                                        ">
+
+                                        ${seat.sector}
+                                        · F${seat.row}
+                                        · P${seat.number}
+
+                                    </span>
+
+                                `
+                            ).join("")}
+
+                        </div>
+
+
+                        <div
+                            style="
+                                margin-top:15px;
+                                padding-top:15px;
+                                border-top:1px solid #e2e8f0;
+                                color:#64748b;
+                                font-size:10px;
+                            ">
+
+                            Código:
+                            <strong>
+                                ${purchase.id}
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                `
+            )
+            .join("");
+
+}
+
+
+/* =========================================================
+   ADMIN
+========================================================= */
+
+function renderAdmin(){
+
+    renderAdminStats();
+
+    renderAdminMatches();
+
+    renderAdminSeats();
+
+    renderAdminCategories();
+
+}
+
+
+/* =========================================================
+   ADMIN STATS
+========================================================= */
+
+function renderAdminStats(){
+
+    const container =
+        document.getElementById(
+            "adminStats"
+        );
+
+    if(!container) return;
+
+
+    const total =
+        db.seats.length;
+
+    const sold =
+        db.seats.filter(
+            s=>s.state==="sold"
+        ).length;
+
+    const reserved =
+        db.seats.filter(
+            s=>s.state==="reserved"
+        ).length;
+
+    const available =
+        db.seats.filter(
+            s=>s.state==="available"
+        ).length;
+
+    const revenue =
+        db.purchases.reduce(
+            (sum,purchase)=>
+                sum+purchase.total,
+            0
+        );
+
+
+    container.innerHTML=`
+
+        <div class="stat-card">
+
+            <span>
+                Capacidad total
+            </span>
+
+            <strong>
+                ${total.toLocaleString("es-CO")}
+            </strong>
+
+            <small>
+                Localidades
+            </small>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <span>
+                Vendidas
+            </span>
+
+            <strong>
+                ${sold.toLocaleString("es-CO")}
+            </strong>
+
+            <small>
+                ${((sold/total)*100).toFixed(1)}%
+                de ocupación
+            </small>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <span>
+                Disponibles
+            </span>
+
+            <strong>
+                ${available.toLocaleString("es-CO")}
+            </strong>
+
+            <small>
+                Venta abierta
+            </small>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <span>
+                Recaudo
+            </span>
+
+            <strong
+                style="font-size:22px;">
+                ${currency(revenue)}
+            </strong>
+
+            <small>
+                ${db.purchases.length}
+                compras
+            </small>
+
+        </div>
+
+    `;
+
+
+    const occupancy =
+        total
+        ? (sold/total)*100
+        : 0;
+
+
+    document.getElementById(
+        "occupancyText"
+    ).textContent =
+        occupancy.toFixed(1)+"%";
+
+
+    document.getElementById(
+        "occupancyBar"
+    ).style.width =
+        occupancy+"%";
+
+
+    renderRevenueByCategory();
+
+}
+
+
+/* =========================================================
+   RECAUDO POR CATEGORÍA
+========================================================= */
+
+function renderRevenueByCategory(){
+
+    const container =
+        document.getElementById(
+            "categoryRevenue"
+        );
+
+    if(!container) return;
+
+
+    const revenue={};
+
+
+    db.categories.forEach(
+        category=>{
+            revenue[category.id]=0;
+        }
+    );
+
+
+    db.purchases.forEach(
+        purchase=>{
+
+            purchase.seats.forEach(
+                seat=>{
+
+                    revenue[
+                        seat.category
+                    ] += seat.price;
+
+                }
+            );
+
+        }
+    );
+
+
+    container.innerHTML =
+        db.categories.map(
+            category=>`
+
+                <div
+                    style="
+                        display:flex;
+                        align-items:center;
+                        gap:10px;
+                        margin-bottom:12px;
+                    ">
+
+                    <span
+                        class="color-dot"
+                        style="
+                            background:
+                                ${category.color};
+                        ">
+                    </span>
+
+                    <div
+                        style="flex:1;">
+
+                        <div
+                            style="
+                                display:flex;
+                                justify-content:space-between;
+                                font-size:11px;
+                            ">
+
+                            <strong>
+                                ${category.name}
+                            </strong>
+
+                            <span>
+                                ${currency(
+                                    revenue[
+                                        category.id
+                                    ]
+                                )}
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            `
+        ).join("");
+
+}
+
+
+/* =========================================================
+   ADMIN MATCHES
+========================================================= */
+
+function renderAdminMatches(){
+
+    const container =
+        document.getElementById(
+            "adminMatchesTable"
+        );
+
+    if(!container) return;
+
+
+    container.innerHTML=`
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        Partido
+                    </th>
+
+                    <th>
+                        Fecha
+                    </th>
+
+                    <th>
+                        Hora
+                    </th>
+
+                    <th>
+                        Competición
+                    </th>
+
+                    <th>
+                        Acción
+                    </th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                ${db.matches.map(
+                    match=>`
+
+                        <tr>
+
+                            <td>
+                                <strong>
+                                    ${escapeHTML(
+                                        match.home
+                                    )}
+                                    vs
+                                    ${escapeHTML(
+                                        match.away
+                                    )}
+                                </strong>
+                            </td>
+
+                            <td>
+                                ${formatDate(
+                                    match.date
+                                )}
+                            </td>
+
+                            <td>
+                                ${match.time}
+                            </td>
+
+                            <td>
+                                ${escapeHTML(
+                                    match.competition
+                                )}
+                            </td>
+
+                            <td>
+
+                                <button
+                                    class="btn btn-danger"
+                                    style="
+                                        padding:7px 10px;
+                                        font-size:10px;
+                                    "
+                                    onclick="
+                                        deleteMatch(
+                                            '${match.id}'
+                                        )
+                                    ">
+
+                                    ELIMINAR
+
+                                </button>
+
+                            </td>
+
+                        </tr>
+
+                    `
+                ).join("")}
+
+            </tbody>
+
+        </table>
+
+    `;
+
+}
+
+
+/* =========================================================
+   CREAR PARTIDO
+========================================================= */
+
+function createMatch(){
+
+    const home =
+        document.getElementById(
+            "newHome"
+        ).value.trim();
+
+    const away =
+        document.getElementById(
+            "newAway"
+        ).value.trim();
+
+    const date =
+        document.getElementById(
+            "newDate"
+        ).value;
+
+    const time =
+        document.getElementById(
+            "newTime"
+        ).value;
+
+    const competition =
+        document.getElementById(
+            "newCompetition"
+        ).value.trim();
+
+
+    if(
+        !home ||
+        !away ||
+        !date ||
+        !time ||
+        !competition
+    ){
+
+        toast(
+            "Completa todos los campos.",
+            "warning"
+        );
+
+        return;
+
+    }
+
+
+    db.matches.push({
+
+        id:
+            "M"+Date.now(),
+
+        home,
+
+        away,
+
+        date,
+
+        time,
+
+        competition,
+
+        status:"Venta abierta"
+
+    });
+
+
+    saveDatabase();
+
+    renderMatches();
+
+    populateMatchSelect();
+
+    renderAdminMatches();
+
+
+    document.getElementById(
+        "newAway"
+    ).value="";
+
+
+    toast(
+        "Partido creado correctamente.",
+        "success"
+    );
+
+}
+
+
+function deleteMatch(id){
+
+    if(db.matches.length<=1){
+
+        toast(
+            "Debe existir al menos un partido.",
+            "warning"
+        );
+
+        return;
+
+    }
+
+
+    const match =
+        db.matches.find(
+            m=>m.id===id
+        );
+
+
+    if(
+        !confirm(
+            `¿Eliminar ${match.home} vs ${match.away}?`
+        )
+    ){
+
+        return;
+
+    }
+
+
+    db.matches =
+        db.matches.filter(
+            m=>m.id!==id
+        );
+
+
+    if(currentMatchId===id){
+
+        currentMatchId =
+            db.matches[0].id;
+
+    }
+
+
+    saveDatabase();
+
+    renderMatches();
+
+    populateMatchSelect();
+
+    renderAdminMatches();
+
+    toast(
+        "Partido eliminado.",
+        "success"
+    );
+
+}
+
+
+/* =========================================================
+   ADMIN SEATS
+========================================================= */
+
+function renderAdminSeats(){
+
+    const container =
+        document.getElementById(
+            "seatAdminTable"
+        );
+
+    if(!container) return;
+
+
+    const total=db.seats.length;
+
+    const sold =
+        db.seats.filter(
+            s=>s.state==="sold"
+        ).length;
+
+    const available =
+        db.seats.filter(
+            s=>s.state==="available"
+        ).length;
+
+    const reserved =
+        db.seats.filter(
+            s=>s.state==="reserved"
+        ).length;
+
+
+    container.innerHTML=`
+
+        <div
+            style="
+                display:flex;
+                gap:15px;
+                flex-wrap:wrap;
+                margin-bottom:20px;
+            ">
+
+            <strong>
+                Total: ${total}
+            </strong>
+
+            <span>
+                Disponibles: ${available}
+            </span>
+
+            <span>
+                Vendidas: ${sold}
+            </span>
+
+            <span>
+                Reservadas: ${reserved}
+            </span>
+
+        </div>
+
+
+        <p
+            style="
+                color:#64748b;
+                font-size:12px;
+            ">
+
+            Utiliza el mapa del estadio para
+            seleccionar localidades individualmente.
+
+        </p>
+
+    `;
+
+}
+
+
+/* =========================================================
+   ADMIN CATEGORIES
+========================================================= */
+
+function renderAdminCategories(){
+
+    const container =
+        document.getElementById(
+            "categoriesAdminTable"
+        );
+
+    if(!container) return;
+
+
+    container.innerHTML=`
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        Categoría
+                    </th>
+
+                    <th>
+                        Precio
+                    </th>
+
+                    <th>
+                        Descripción
+                    </th>
+
+                    <th>
+                        Color
+                    </th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                ${db.categories.map(
+                    category=>`
+
+                        <tr>
+
+                            <td>
+
+                                <span
+                                    style="
+                                        display:inline-flex;
+                                        align-items:center;
+                                        gap:8px;
+                                        font-weight:900;
+                                    ">
+
+                                    <span
+                                        class="color-dot"
+                                        style="
+                                            background:
+                                                ${category.color};
+                                        ">
+                                    </span>
+
+                                    ${category.name}
+
+                                </span>
+
+                            </td>
+
+                            <td>
+                                ${currency(
+                                    category.price
+                                )}
+                            </td>
+
+                            <td>
+                                ${category.description}
+                            </td>
+
+                            <td>
+                                ${category.color}
+                            </td>
+
+                        </tr>
+
+                    `
+                ).join("")}
+
+            </tbody>
+
+        </table>
+
+    `;
+
+}
+
+
+/* =========================================================
+   ADMIN TABS
+========================================================= */
+
+document
+    .querySelectorAll(".admin-tab")
+    .forEach(button=>{
+
+        button.addEventListener(
+            "click",
+            ()=>{
+
+                document
+                    .querySelectorAll(
+                        ".admin-tab"
+                    )
+                    .forEach(
+                        b=>b.classList.remove(
+                            "active"
+                        )
+                    );
+
+                document
+                    .querySelectorAll(
+                        ".admin-panel"
+                    )
+                    .forEach(
+                        p=>p.classList.remove(
+                            "active"
+                        )
+                    );
+
+
+                button.classList.add(
+                    "active"
+                );
+
+
+                document
+                    .getElementById(
+                        button.dataset.admin
+                    )
+                    .classList.add(
+                        "active"
+                    );
+
+            }
+        );
+
+    });
+
+
+/* =========================================================
+   SEARCH
+========================================================= */
+
+document
+    .getElementById("seatSearch")
+    ?.addEventListener(
+        "input",
+        event=>{
+
+            const query =
+                event.target.value
+                    .trim()
+                    .toUpperCase();
+
+
+            if(!query){
+
+                return;
+
+            }
+
+
+            const seat =
+                db.seats.find(
+                    s=>
+                        s.shortId
+                            .toUpperCase()
+                            .includes(query)
+                );
+
+
+            if(!seat){
+
+                return;
+
+            }
+
+
+            /*
+               Seleccionarlo si está disponible.
+            */
+
+            if(seat.state==="available"){
+
+                if(
+                    !selectedSeats.includes(
+                        seat.id
+                    )
+                ){
+
+                    selectedSeats.push(
+                        seat.id
+                    );
+
+                }
+
+            }
+
+
+            renderStadium();
+
+            updateCart();
+
+
+            toast(
+                `Localidad encontrada: ${seat.shortId}`,
+                "success"
+            );
+
+        }
+    );
+
+
+/* =========================================================
+   TOAST
+========================================================= */
+
+function toast(message,type="success"){
+
+    const container =
+        document.getElementById(
+            "toastContainer"
+        );
+
+
+    const element =
+        document.createElement("div");
+
+
+    element.className =
+        `toast ${type}`;
+
+
+    element.textContent=message;
+
+
+    container.appendChild(element);
+
+
+    setTimeout(
+        ()=>{
+            element.remove();
+        },
+        3000
+    );
+
+}
+
+
+/* =========================================================
+   ESCAPE HTML
+========================================================= */
+
+function escapeHTML(value){
+
+    return String(value)
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
+
+}
+
+
+/* =========================================================
+   NAV BUTTONS
+========================================================= */
+
+document
+    .querySelectorAll(".nav-btn")
+    .forEach(button=>{
+
+        button.addEventListener(
+            "click",
+            ()=>{
+
+                showPage(
+                    button.dataset.page
+                );
+
+            }
+        );
+
+    });
+
+
+/* =========================================================
+   INICIALIZACIÓN
+========================================================= */
+
+function init(){
+
+    /*
+       Si una versión anterior existe pero no tiene
+       suficientes localidades, regenerar.
+    */
+
+    if(
+        !db.seats ||
+        db.seats.length < 500
+    ){
+
+        generateSeats(db);
+
+        saveDatabase();
+
+    }
+
+
+    renderFilters();
+
+    renderMatches();
+
+    populateMatchSelect();
+
+    renderStadium();
+
+    updateCart();
+
+    renderPurchases();
+
+    renderAdmin();
+
+    resetStadium();
+
+}
+
+
+init();
+
+
+/* =========================================================
+   ATAJO DE TECLADO
+========================================================= */
+
+document.addEventListener(
+    "keydown",
+    event=>{
+
+        if(event.key==="Escape"){
+
+            closePurchaseModal();
+
+            hideSeatTooltip();
+
+        }
+
+        if(
+            event.key==="+" ||
+            event.key==="="
+        ){
+
+            zoomStadium(.1);
+
+        }
+
+        if(event.key==="-"){
+
+            zoomStadium(-.1);
+
+        }
+
+    }
+);
+
+</script>
+
+</body>
+</html>
